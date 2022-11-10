@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+    meta.helm.sh/release-name: reana-v2
+    meta.helm.sh/release-namespace: reana
+    traefik.frontend.entryPoints: http,https
+  name: reana-v2-ingress
+  namespace: reana
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: reana-v2-server
+            port:
+              number: 80
+        path: /api
+        pathType: Prefix
+      - backend:
+          service:
+            name: reana-v2-server
+            port:
+              number: 80
+        path: /oauth
+        pathType: Prefix
+      - backend:
+          service:
+            name: reana-v2-ui
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - secretName: reana-v2-tls-secret
+status:
+  loadBalancer:
+    ingress:
+    - ip: 10.10.1.15
