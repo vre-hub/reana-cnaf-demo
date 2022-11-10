@@ -1,6 +1,6 @@
-# Manual Setup
+# Manual Setup Documentation
 
-After the cluster is provisioned through the [GRyCAP IM](https://appsgrycap.i3m.upv.es:31443/im-dashboard/login), logon `ssh -i <keyfile.pem> <username>@<ip>` to the the master VM using the cloud credentials accessible from the IM Dashboard (see [documentation(https://imdocs.readthedocs.io/en/latest/dashboard.html#infrastructures)).
+After the cluster is provisioned through the [GRyCAP IM](https://appsgrycap.i3m.upv.es:31443/im-dashboard/login), logon `ssh -i <keyfile.pem> <username>@<ip>` to the the master VM using the cloud credentials accessible from the IM Dashboard (see [documentation](https://imdocs.readthedocs.io/en/latest/dashboard.html#infrastructures)).
 
 Check the volume is attached, the NFS server is running and publishing the attached volume:
 
@@ -80,7 +80,7 @@ status:
 ```
 [ING YAML Template](reana_cnaf/reana-cnaf-demo/manual-setup/helm-release-name-ingress.yml)
 
-To verify everything is now working correctly access the UI and see if the demo workflow was running correctly:
+To verify everything is now working correctly access the UI and see if the demo workflow has run correctly:
 
 ![](../media/reana-ui-wf.png)
 
