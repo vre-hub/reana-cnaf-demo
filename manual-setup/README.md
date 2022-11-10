@@ -21,7 +21,7 @@ parameters:
   archiveOnDelete: "false"
 provisioner: fuseim.pri/ifs
 ```
-[SC YAML Template](reana_cnaf/reana-cnaf-demo/manual-setup/helm-release-name-shared-volume-storage-class.yml)
+[SC YAML Template](helm-release-name-shared-volume-storage-class.yml)
 
 After that you can install the official REANA Helm Chart as follows:
 
@@ -78,7 +78,7 @@ status:
     ingress:
     - ip: <lb-ip>
 ```
-[ING YAML Template](reana_cnaf/reana-cnaf-demo/manual-setup/helm-release-name-ingress.yml)
+[ING YAML Template](helm-release-name-ingress.yml)
 
 To verify everything is now working correctly access the UI and see if the demo workflow has run correctly:
 
