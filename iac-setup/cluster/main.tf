@@ -1,10 +1,10 @@
 # Openstack Resources (canot be changed after apply due to limitations of the openstack tf provider)
 
-resource "openstack_compute_keypair_v2" "openstack-keypair" {
+resource "openstack_compute_keypair_v2" "cnaf_openstack_keypair" {
   name = "cluster_kp-${var.cluster-resource-suffix}"
 }
 
-resource "openstack_containerinfra_cluster_v1" "openstack-cluster" {
+resource "openstack_containerinfra_cluster_v1" "cnaf_openstack_cluster" {
   name                = "reana-cnaf-demo"
   cluster_template_id = "22a4c77f-cfe3-47bb-8006-31d02375a3f3"
   master_count        = 2
@@ -20,13 +20,13 @@ resource "openstack_containerinfra_cluster_v1" "openstack-cluster" {
 
 # Kubernetes Resources
 
-resource "kubernetes_namespace_v1" "ns-reana" {
+resource "kubernetes_namespace_v1" "reana_namespace" {
   metadata {
     name = var.reana-ns
   }
 }
 
-resource "kubernetes_storage_class_v1" "reana-storage-class" {
+resource "kubernetes_storage_class_v1" "reana_storage_class" {
   metadata {
     name = "${reana_release_name}-shared-volume-storage-class"
   }
@@ -44,14 +44,14 @@ kubectl get ingress reana-v2-ingress -o yaml -n reana| tfk8s --strip -o reana-in
 resource "kubernetes_manifest" "reana_nginx_ingress" {
   manifest = {
     "apiVersion" = "networking.k8s.io/v1"
-    "kind" = "Ingress"
+    "kind"       = "Ingress"
     "metadata" = {
       "annotations" = {
         "ingress.kubernetes.io/ssl-redirect" = "true"
-        "kubernetes.io/ingress.class" = "nginx"
-        "traefik.frontend.entryPoints" = "http,https"
+        "kubernetes.io/ingress.class"        = "nginx"
+        "traefik.frontend.entryPoints"       = "http,https"
       }
-      "name" = "${reana_release_name}-ingress"
+      "name"      = "${reana_release_name}-ingress"
       "namespace" = "reana"
     }
     "spec" = {
@@ -68,7 +68,7 @@ resource "kubernetes_manifest" "reana_nginx_ingress" {
                     }
                   }
                 }
-                "path" = "/api"
+                "path"     = "/api"
                 "pathType" = "Prefix"
               },
               {
@@ -80,7 +80,7 @@ resource "kubernetes_manifest" "reana_nginx_ingress" {
                     }
                   }
                 }
-                "path" = "/oauth"
+                "path"     = "/oauth"
                 "pathType" = "Prefix"
               },
               {
@@ -92,7 +92,7 @@ resource "kubernetes_manifest" "reana_nginx_ingress" {
                     }
                   }
                 }
-                "path" = "/"
+                "path"     = "/"
                 "pathType" = "Prefix"
               },
             ]
@@ -110,9 +110,9 @@ resource "kubernetes_manifest" "reana_nginx_ingress" {
 
 # Helm Resources
 
-module "helm-rucio-daemons" {
+module "helm_module_reana" {
   source = "../modules/reana"
 
-  ns_name        = var.reana-ns
+  ns_name      = var.reana-ns
   release_name = var.reana_release_name
 }

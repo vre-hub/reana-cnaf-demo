@@ -8,7 +8,7 @@ terraform {
       source  = "terraform-provider-openstack/openstack"
       version = "1.49.0"
     }
- /*    kubernetes = {
+    /*    kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "2.15.0"
     }
