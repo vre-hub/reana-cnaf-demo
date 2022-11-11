@@ -16,9 +16,14 @@ jobs:
           export REANA_ACCESS_TOKEN=${{ secrets.REANA_TK }}
           git clone https://github.com/reanahub/reana-demo-root6-roofit
       - name: Test connection
-        run: reana-client ping -t ${{ secrets.REANA_TK }}
+        run: |
+          export REANA_SERVER_URL=${{ secrets.REANA_URL }}
+          export REANA_ACCESS_TOKEN=${{ secrets.REANA_TK }}
+          reana-client ping
       - name: Run workflow
         run: |
+          export REANA_SERVER_URL=${{ secrets.REANA_URL }}
+          export REANA_ACCESS_TOKEN=${{ secrets.REANA_TK }}
           cd reana-demo-root6-roofit
-          reana-client run -w root6-roofit -t ${{ secrets.REANA_TK }}
+          reana-client run -w root6-roofit
           
