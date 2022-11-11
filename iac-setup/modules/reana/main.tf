@@ -3,7 +3,7 @@ resource "helm_release" "reana_chart" {
   repository = "https://reanahub.github.io/reana"
   chart      = "reana"
   version    = "0.9.0-alpha.6"
-  namespace  = "${var.ns_name}"
+  namespace  = var.ns_name
 
   values = [
     file("${path.module}/values.yaml")
