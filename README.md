@@ -1,3 +1,5 @@
+[![REANA Workflow Test](https://github.com/EOSC-Future/reana-cnaf-demo/actions/workflows/reana-wf-test.yml/badge.svg)](https://github.com/EOSC-Future/reana-cnaf-demo/actions/workflows/reana-wf-test.yml)
+
 # REANA CNAF Demo
 
 Scalable REANA cluster run on CNAF resources.
