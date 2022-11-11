@@ -10,17 +10,15 @@ jobs:
       - name: Install reana-client
         run: |
           pip install reana-client
-      - name: Setup env
+      - name: Clone demo
         run: |
-          export REANA_SERVER_URL=${{ secrets.REANA_URL }}
-          export REANA_ACCESS_TOKEN=${{ secrets.REANA_TK }}
           git clone https://github.com/reanahub/reana-demo-root6-roofit
-      - name: Test connection
+      - name: Test connection to server
         run: |
           export REANA_SERVER_URL=${{ secrets.REANA_URL }}
           export REANA_ACCESS_TOKEN=${{ secrets.REANA_TK }}
           reana-client ping
-      - name: Run workflow
+      - name: Run demo workflow
         run: |
           export REANA_SERVER_URL=${{ secrets.REANA_URL }}
           export REANA_ACCESS_TOKEN=${{ secrets.REANA_TK }}
