@@ -26,7 +26,87 @@ resource "kubernetes_namespace_v1" "ns-reana" {
   }
 }
 
-# missing sc and ingress config
+resource "kubernetes_storage_class_v1" "reana-storage-class" {
+  metadata {
+    name = "${reana_release_name}-shared-volume-storage-class"
+  }
+  storage_provisioner = "fuseim.pri/ifs"
+  parameters = {
+    archiveOnDelete = "false"
+  }
+}
+
+/* 
+Exported via tfk8s from yml to hcl format to use as manifest resource:
+kubectl get ingress reana-v2-ingress -o yaml -n reana| tfk8s --strip -o reana-ingress.tf
+*/
+
+resource "kubernetes_manifest" "reana_nginx_ingress" {
+  manifest = {
+    "apiVersion" = "networking.k8s.io/v1"
+    "kind" = "Ingress"
+    "metadata" = {
+      "annotations" = {
+        "ingress.kubernetes.io/ssl-redirect" = "true"
+        "kubernetes.io/ingress.class" = "nginx"
+        "traefik.frontend.entryPoints" = "http,https"
+      }
+      "name" = "${reana_release_name}-ingress"
+      "namespace" = "reana"
+    }
+    "spec" = {
+      "rules" = [
+        {
+          "http" = {
+            "paths" = [
+              {
+                "backend" = {
+                  "service" = {
+                    "name" = "${reana_release_name}-server"
+                    "port" = {
+                      "number" = 80
+                    }
+                  }
+                }
+                "path" = "/api"
+                "pathType" = "Prefix"
+              },
+              {
+                "backend" = {
+                  "service" = {
+                    "name" = "${reana_release_name}-server"
+                    "port" = {
+                      "number" = 80
+                    }
+                  }
+                }
+                "path" = "/oauth"
+                "pathType" = "Prefix"
+              },
+              {
+                "backend" = {
+                  "service" = {
+                    "name" = "${reana_release_name}-ui"
+                    "port" = {
+                      "number" = 80
+                    }
+                  }
+                }
+                "path" = "/"
+                "pathType" = "Prefix"
+              },
+            ]
+          }
+        },
+      ]
+      "tls" = [
+        {
+          "secretName" = "${reana_release_name}-tls-secret"
+        },
+      ]
+    }
+  }
+}
 
 # Helm Resources
 
